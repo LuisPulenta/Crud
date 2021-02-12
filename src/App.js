@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {isEmpty, size} from 'lodash'
 import shortid from 'shortid'
+import { getCollection } from './actions'
 
 function App() {
   const [task, setTask] = useState('') 
@@ -8,6 +9,13 @@ function App() {
   const [editMode, setEditMode] = useState(false)
   const [id, setId] = useState("")
   const [error, setError] = useState(null)
+
+useEffect(() => {
+(async ()=> {
+  const result=await getCollection("tasks")
+  console.log(result)
+})()
+}, [])
 
   const validForm=() => {
    let isValid=true
@@ -61,7 +69,7 @@ const editTask = (theTask) =>{
   }  
 
   return (
-    <div className="container" mt-5>
+    <div className="container mt-5">
       <h1>Tareas</h1>
       <hr/>
       <div className="row">
@@ -69,7 +77,7 @@ const editTask = (theTask) =>{
         <h4 className="text-center">Lista de Tareas</h4>
         
         {
-          size(tasks)==0 ? (
+          size(tasks)===0 ? (
             <li className="list-group-item">Aún no hay tareas programadas</li>
           ):(
           <ul className="list-group">
